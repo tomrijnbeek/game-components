@@ -63,10 +63,10 @@ namespace GameComponents
         /// Gets all components of the specified type.
         /// </summary>
         /// <typeparam name="T">The type of the components to retrieve.</typeparam>
-        /// <returns>A list of all components of the specified type.</returns>
-        public List<T> GetComponents<T>() where T : IGameComponent
+        /// <returns>An array of all components of the specified type.</returns>
+        public T[] GetComponents<T>() where T : IGameComponent
         {
-            return this.components.OfType<T>().ToList();
+            return this.components.OfType<T>().ToArray();
         }
     }
 }
