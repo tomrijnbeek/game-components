@@ -21,7 +21,19 @@ namespace GameComponents
         }
 
         /// <summary>
-        /// Adds a new component to the game object.
+        /// Adds a new component of the specified type to the game object.
+        /// </summary>
+        /// <typeparam name="T">The type of component to be added.</typeparam>
+        /// <returns>The added component.</returns>
+        public T AddComponent<T>() where T : IGameComponent, new()
+        {
+            T ret;
+            this.components.Add(ret = new T());
+            return ret;
+        }
+
+        /// <summary>
+        /// Adds an existing component to the game object.
         /// </summary>
         /// <param name="component">The component to be added.</param>
         public void AddComponent(IGameComponent component)
