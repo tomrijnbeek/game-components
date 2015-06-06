@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace GameComponents
@@ -8,7 +9,9 @@ namespace GameComponents
     /// </summary>
     public sealed class GameObject
     {
-        private readonly List<IGameComponent> components = new List<IGameComponent>();
+        //private readonly List<IGameComponent> components = new List<IGameComponent>();
+        private readonly LinkedList<IGameComponent> componentList = new LinkedList<IGameComponent>();
+        private readonly Dictionary<Type, List<LinkedListNode<IGameComponent>>> componentDict = new Dictionary<Type, List<LinkedListNode<IGameComponent>>>(); 
 
         /// <summary>
         /// Updates the game object.
@@ -16,7 +19,7 @@ namespace GameComponents
         /// <param name="dt">The amount of time passed since the last update call.</param>
         public void Update(float dt)
         {
-            foreach (var c in this.components)
+            foreach (var c in this.componentList)
                 c.Update(dt);
         }
 
@@ -28,7 +31,7 @@ namespace GameComponents
         public T AddComponent<T>() where T : IGameComponent, new()
         {
             T ret;
-            this.components.Add(ret = new T());
+            this.AddComponent(ret = new T());
             return ret;
         }
 
@@ -38,7 +41,13 @@ namespace GameComponents
         /// <param name="component">The component to be added.</param>
         public void AddComponent(IGameComponent component)
         {
-            this.components.Add(component);
+            var node = this.componentList.AddLast(component);
+            var type = component.GetType();
+            List<LinkedListNode<IGameComponent>> list;
+            if (this.componentDict.TryGetValue(type, out list))
+                list.Add(node);
+            else
+                componentDict.Add(type, new List<LinkedListNode<IGameComponent>> { node });
         }
 
         /// <summary>
@@ -48,7 +57,7 @@ namespace GameComponents
         /// <returns>True if the component is succesfully removed; false otherwise. Also returns false if the component was not present.</returns>
         public bool RemoveComponent(IGameComponent component)
         {
-            return this.components.Remove(component);
+            return this.componentList.Remove(component);
         }
 
         /// <summary>
@@ -58,7 +67,16 @@ namespace GameComponents
         /// <returns>The amount of components removed.</returns>
         public int RemoveComponents<T>()
         {
-            return this.components.RemoveAll(c => c is T);
+            List<LinkedListNode<IGameComponent>> list;
+
+            if (!componentDict.TryGetValue(typeof (T), out list))
+                return 0;
+            var ret = list.Count;
+            foreach (var node in list)
+                this.componentList.Remove(node);
+            list.Clear();
+
+            return ret;
         }
 
         /// <summary>
@@ -68,7 +86,11 @@ namespace GameComponents
         /// <returns>The first component of the specified type if it exists, null otherwise.</returns>
         public T GetComponent<T>() where T : IGameComponent
         {
-            return (T)this.components.FirstOrDefault(c => c is T);
+            List<LinkedListNode<IGameComponent>> list;
+
+            if (!componentDict.TryGetValue(typeof (T), out list) || list.Count == 0)
+                return default(T);
+            return (T)list[0].Value;
         }
 
         /// <summary>
@@ -78,7 +100,11 @@ namespace GameComponents
         /// <returns>An array of all components of the specified type.</returns>
         public T[] GetComponents<T>() where T : IGameComponent
         {
-            return this.components.OfType<T>().ToArray();
+            List<LinkedListNode<IGameComponent>> list;
+
+            if (!componentDict.TryGetValue(typeof(T), out list) || list.Count == 0)
+                return new T[0];
+            return list.Select(node => (T) node.Value).ToArray();
         }
     }
 }
