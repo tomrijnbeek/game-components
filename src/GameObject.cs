@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using OpenTK;
 
 namespace GameComponents
 {
@@ -8,6 +9,21 @@ namespace GameComponents
     /// </summary>
     public sealed class GameObject
     {
+        /// <summary>
+        /// The position of the game object in world space.
+        /// </summary>
+        public Vector3 Position;
+
+        /// <summary>
+        /// The rotation of the game object in world space.
+        /// </summary>
+        public Quaternion Rotation;
+
+        /// <summary>
+        /// The scale of the game object in world space.
+        /// </summary>
+        public Vector3 Scale = Vector3.One;
+
         private readonly List<IGameComponent> components = new List<IGameComponent>();
 
         /// <summary>
