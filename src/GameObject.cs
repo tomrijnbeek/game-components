@@ -84,7 +84,7 @@ namespace GameComponents
         /// <returns>The first component of the specified type if it exists, null otherwise.</returns>
         public T GetComponent<T>() where T : IGameComponent
         {
-            return (T)this.components.First(c => c is T);
+            return (T)this.components.FirstOrDefault(c => c is T);
         }
 
         /// <summary>
