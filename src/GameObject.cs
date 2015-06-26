@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using OpenTK;
 
 namespace GameComponents
@@ -97,6 +98,26 @@ namespace GameComponents
         public T[] GetComponents<T>() where T : GameComponent
         {
             return this.components.OfType<T>().ToArray();
+        }
+
+        public void SendMessage(string msg)
+        {
+            foreach (var c in this.components)
+            {
+                var type = c.GetType();
+                var methodInfo = type.GetMethod(msg);
+                methodInfo.Invoke(c, null);
+            }
+        }
+
+        public void SendMessage<T>(string msg, T parameter)
+        {
+            foreach (var c in this.components)
+            {
+                var type = c.GetType();
+                var methodInfo = type.GetMethod(msg);
+                methodInfo.Invoke(c, new object[] { parameter });
+            }
         }
     }
 }
