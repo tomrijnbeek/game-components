@@ -24,7 +24,7 @@ namespace GameComponents
         /// </summary>
         public Vector3 Scale = Vector3.One;
 
-        private readonly List<IGameComponent> components = new List<IGameComponent>();
+        private readonly List<GameComponent> components = new List<GameComponent>();
 
         /// <summary>
         /// Updates the game object.
@@ -41,10 +41,11 @@ namespace GameComponents
         /// </summary>
         /// <typeparam name="T">The type of component to be added.</typeparam>
         /// <returns>The added component.</returns>
-        public T AddComponent<T>() where T : IGameComponent, new()
+        public T AddComponent<T>() where T : GameComponent, new()
         {
             T ret;
             this.components.Add(ret = new T());
+            ret.SetGameObject(this);
             return ret;
         }
 
@@ -52,9 +53,10 @@ namespace GameComponents
         /// Adds an existing component to the game object.
         /// </summary>
         /// <param name="component">The component to be added.</param>
-        public void AddComponent(IGameComponent component)
+        public void AddComponent(GameComponent component)
         {
             this.components.Add(component);
+            component.SetGameObject(this);
         }
 
         /// <summary>
@@ -62,7 +64,7 @@ namespace GameComponents
         /// </summary>
         /// <param name="component">The component to be removed.</param>
         /// <returns>True if the component is succesfully removed; false otherwise. Also returns false if the component was not present.</returns>
-        public bool RemoveComponent(IGameComponent component)
+        public bool RemoveComponent(GameComponent component)
         {
             return this.components.Remove(component);
         }
@@ -82,7 +84,7 @@ namespace GameComponents
         /// </summary>
         /// <typeparam name="T">The type of the component to retrieve.</typeparam>
         /// <returns>The first component of the specified type if it exists, null otherwise.</returns>
-        public T GetComponent<T>() where T : IGameComponent
+        public T GetComponent<T>() where T : GameComponent
         {
             return (T)this.components.FirstOrDefault(c => c is T);
         }
@@ -92,7 +94,7 @@ namespace GameComponents
         /// </summary>
         /// <typeparam name="T">The type of the components to retrieve.</typeparam>
         /// <returns>An array of all components of the specified type.</returns>
-        public T[] GetComponents<T>() where T : IGameComponent
+        public T[] GetComponents<T>() where T : GameComponent
         {
             return this.components.OfType<T>().ToArray();
         }
