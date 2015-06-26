@@ -92,9 +92,20 @@ namespace GameComponents
         /// </summary>
         /// <typeparam name="T">The type of the components to retrieve.</typeparam>
         /// <returns>An array of all components of the specified type.</returns>
-        public T[] GetComponents<T>() where T : IGameComponent
+        public T[] GetComponents<T>()
         {
             return this.components.OfType<T>().ToArray();
+        }
+
+        /// <summary>
+        /// Sends a message to all components that are listening for the specified message.
+        /// </summary>
+        /// <param name="message">The contents of the message.</param>
+        /// <typeparam name="T">TThe type of message.</typeparam>
+        public void SendMessage<T>(T message)
+        {
+            foreach (var c in this.GetComponents<IListener<T>>())
+                c.Listen(message);
         }
     }
 }
