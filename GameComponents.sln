@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameComponents", "src\GameComponents.csproj", "{6399116B-21F2-47C8-B76A-F67D2A330DA6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameComponents.Tests", "tests\GameComponents.Tests.csproj", "{3376F939-EB80-4CC9-86C6-C4A853DA5176}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{6399116B-21F2-47C8-B76A-F67D2A330DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6399116B-21F2-47C8-B76A-F67D2A330DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6399116B-21F2-47C8-B76A-F67D2A330DA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3376F939-EB80-4CC9-86C6-C4A853DA5176}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3376F939-EB80-4CC9-86C6-C4A853DA5176}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3376F939-EB80-4CC9-86C6-C4A853DA5176}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3376F939-EB80-4CC9-86C6-C4A853DA5176}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
